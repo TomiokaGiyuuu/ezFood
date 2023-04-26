@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:match_founder/pages/profile_page.dart';
 
+import 'chat_page.dart';
 import 'find_teammate_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,15 +17,8 @@ class _HomePageState extends State<HomePage> {
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white);
   static const List<Widget> _widgetOptions = <Widget>[
     FindTeammate(),
-    Text(
-      'ChatPage(pending...)',
-      style: optionStyle,
-
-    ),
-    Text(
-      'ProfilePage(pending...)',
-      style: optionStyle,
-    ),
+    Chat(),
+    Profile()
   ];
 
   void _onItemTapped(int index) {
