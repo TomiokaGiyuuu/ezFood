@@ -37,7 +37,7 @@ class IntroScreen extends StatelessWidget {
 
             // groceree gives you fresh vegetables and fruits
             Text(
-              'Fresh items everyday',
+              'Cool people everyday',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,

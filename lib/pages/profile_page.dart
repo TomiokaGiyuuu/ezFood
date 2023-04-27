@@ -28,7 +28,7 @@ class _ProfileState extends State<Profile> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(25.0),
-                      child: Image.asset('lib/images/profileImg.png'),
+                      child: Image.asset('lib/images/pinguin.png'),
                     )
                   ),
                   Padding(
