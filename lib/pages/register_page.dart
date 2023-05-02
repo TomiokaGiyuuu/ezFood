@@ -6,11 +6,24 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  String? _errorMessage;
+  final _nicknameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   void _signIn(){
-    Navigator.of(context).pushReplacementNamed('/intro_page');
+    final nickname = _nicknameController.text;
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    if (nickname == 'admin' && email == 'admin@admin.com' && password == '123456') {
+      _errorMessage = null;
+      Navigator.of(context).pushReplacementNamed('/intro_page');
+    } else if (nickname.isEmpty || email.isEmpty || password.isEmpty) {
+      _errorMessage = 'Fill the gaps';
+    } else {
+      _errorMessage = 'Error in nickname or email or password';
+    }
+    setState(() {});
   }
 
   void _toLoginPage(){
@@ -26,6 +39,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   Widget _page() {
+    final errorMessage = _errorMessage;
     return Padding(
       padding: const EdgeInsets.all(32.0),
       child: Center(
@@ -34,13 +48,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
           children: [
             _icon(),
             const SizedBox(height: 50),
-            _inputField("NickName", usernameController),
-            const SizedBox(height: 50),
-            _inputField("Username", usernameController),
+            _inputField("Nickname", _nicknameController),
             const SizedBox(height: 20),
-            _inputField("Password", passwordController, isPassword: true),
-            const SizedBox(height: 50),
-            _loginBtn(),
+            _inputField("Email", _emailController),
+            const SizedBox(height: 20),
+            _inputField("Password", _passwordController, isPassword: true),
+            if (errorMessage != null) ...[
+              const SizedBox(height: 10),
+              Text(
+                errorMessage,
+                style: const TextStyle(color: Colors.red, fontSize: 17)
+              ),
+            ],
+            const SizedBox(height: 20),
+            _registerBtn(),
             const SizedBox(height: 20),
             _extraText(),
           ],
@@ -69,7 +90,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.white),
+        hintStyle: const TextStyle(color: Color.fromARGB(255, 88, 86, 86)),
         enabledBorder: border,
         focusedBorder: border,
       ),
@@ -77,13 +98,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  Widget _loginBtn() {
+  Widget _registerBtn() {
     return ElevatedButton(
       onPressed: _signIn,
+      // ignore: sort_child_properties_last
       child: const SizedBox(
-          width: double.infinity,
+          width: 200,
           child: Text(
-            "Sign in ",
+            "Sign up ",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20),
           )),

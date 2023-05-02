@@ -6,11 +6,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  String? _errorMessage;
+  final _nicknameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   void _signIn(){
-    Navigator.of(context).pushReplacementNamed('/intro_page');
+    final nickname = _nicknameController.text;
+    final password = _passwordController.text;
+    if (nickname == 'admin' && password == '123456') {
+      _errorMessage = null;
+      Navigator.of(context).pushReplacementNamed('/intro_page');
+    } else if (nickname.isEmpty || password.isEmpty) {
+      _errorMessage = 'Fill the gaps';
+    } else {
+      _errorMessage = 'Error in nickname or password';
+    }
+    setState(() {});
   }
 
   void _toResiterPage(){
@@ -26,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _page() {
+    final errorMessage = _errorMessage;
     return Padding(
       padding: const EdgeInsets.all(32.0),
       child: Center(
@@ -34,10 +46,17 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             _icon(),
             const SizedBox(height: 50),
-            _inputField("Username", usernameController),
+            _inputField("Nickname", _nicknameController),
             const SizedBox(height: 20),
-            _inputField("Password", passwordController, isPassword: true),
-            const SizedBox(height: 50),
+            _inputField("Password", _passwordController, isPassword: true),
+            if (errorMessage != null) ...[
+              const SizedBox(height: 10),
+              Text(
+                errorMessage,
+                style: const TextStyle(color: Colors.red, fontSize: 17)
+              ),
+            ],
+            const SizedBox(height: 20),
             _loginBtn(),
             const SizedBox(height: 20),
             _extraText(),
@@ -67,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.white),
+        hintStyle: const TextStyle(color: Color.fromARGB(255, 88, 86, 86)),
         enabledBorder: border,
         focusedBorder: border,
       ),
@@ -78,8 +97,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget _loginBtn() {
     return ElevatedButton(
       onPressed: _signIn,
+      // ignore: sort_child_properties_last
       child: const SizedBox(
-          width: double.infinity,
+          width: 200,
           child: Text(
             "Sign in ",
             textAlign: TextAlign.center,
